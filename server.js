@@ -16,7 +16,7 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
-// Sample mocked data
+// Hardcoded mocked assets
 const assets = [
   { id: uuidv4(), name: 'Bitcoin', type: 'crypto' },
   { id: uuidv4(), name: 'Ethereum', type: 'crypto' },
