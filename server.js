@@ -16,7 +16,7 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
-// Sample data
+// Sample mocked data
 const assets = [
   { id: uuidv4(), name: 'Bitcoin', type: 'crypto' },
   { id: uuidv4(), name: 'Ethereum', type: 'crypto' },
@@ -26,8 +26,9 @@ const assets = [
   { id: uuidv4(), name: 'British Pound', type: 'fiat' },
 ];
 
+// utility function to test error handling
 const throwError = (res) => {
-  // res.status(400).json({ error: 'Bad Request' });
+  res.status(400).json({ error: 'Bad Request' });
   // res.status(404).json({ error: 'Not Found' });
 }
 
@@ -56,6 +57,7 @@ const generateHistoricalPrices = () => {
 
 const historicalPrices = generateHistoricalPrices();
 
+// generate test data for the last month
 const generatePositionsForTheMonth = () => {
   const positions = [];
   const endDate = (new Date()).toISOString().split('T')[0];
@@ -96,13 +98,13 @@ const isValidDate = (dateString) => {
 
 // GET /assets
 app.get('/assets', (req, res) => {
-  // throwError(res); // uncomment to throw the error
+  // throwError(res); // uncomment this function to throw an error
   res.json(assets);
 });
 
 // GET /prices
 app.get('/prices', (req, res) => {
-  // throwError(res); // uncomment to throw the error
+  // throwError(res); // uncomment this function to throw an error
   try {
     const { assets: assetIds, asOf, from, to } = req.query;
 
@@ -113,8 +115,6 @@ app.get('/prices', (req, res) => {
     }
 
     const requestedAssets = assetIds.split(',');
-
-    console.log("historicalPrices", historicalPrices)
 
     let filteredPrices = historicalPrices.filter(price =>
       requestedAssets.includes(price.asset)
@@ -130,8 +130,6 @@ app.get('/prices', (req, res) => {
 
       const fromDate = new Date(from);
       const toDate = new Date(to);
-
-      console.log("from to filteredPrices", fromDate, toDate, filteredPrices)
 
       filteredPrices = filteredPrices.filter(price => {
         const priceDate = new Date(price.timestamp);
@@ -151,8 +149,6 @@ app.get('/prices', (req, res) => {
         new Date(price.timestamp).toDateString() === asOfDate.toDateString()
       );
     }
-
-    console.log("filteredPrices", filteredPrices)
 
     if (asOf) {
       // Get latest price for each asset
@@ -182,7 +178,7 @@ app.get('/prices', (req, res) => {
 
 // GET /portfolios
 app.get('/portfolios', (req, res) => {
-  throwError(res);
+  // throwError(res); // uncomment this function to throw an error
   try {
     const { asOf } = req.query;
 
